@@ -21,18 +21,28 @@ const child = exec(`wget -mkEpnp --no-if-modified-since ${data.website}`);
 
 // read stdout from the current child.
 child.stderr.on("data",(response)=>{
+    const responseText = response.toString();
 
-    if(response.startsWith("Resolving "))
+    if(!website)
     {
-        website= response.substring(response.indexOf('Resolve ')+11,response.indexOf(' ('))
+        const resolvingMatch = responseText.match(/Resolving\s+([^\s(]+)/);
+        if (resolvingMatch && resolvingMatch[1]) {
+            website = resolvingMatch[1];
+        }
     }
-    io.emit(data.token,{progress:response})
+    io.emit(data.token,{progress:responseText})
 })
 
 child.stderr.on('close',(response)=>{
+    const websiteFolder = website || getWebsiteFolderName(data.website);
+
+    if (!websiteFolder) {
+        io.emit(data.token, { progress: "Unable to determine downloaded website folder." });
+        return;
+    }
 
     io.emit(data.token,{progress:"Converting"})
-    archiver(website,io,data)
+    archiver(websiteFolder,io,data)
 })
 
 // Handle process termination and cleanup
@@ -52,5 +62,15 @@ function removePartiallyDownloadedFiles(website) {
             console.log('Partially downloaded files removed successfully');
         }
     });
+}
+
+function getWebsiteFolderName(websiteUrl) {
+    try {
+        const normalizedUrl = /^https?:\/\//i.test(websiteUrl) ? websiteUrl : `http://${websiteUrl}`;
+        const parsedUrl = new URL(normalizedUrl);
+        return parsedUrl.port ? `${parsedUrl.hostname}:${parsedUrl.port}` : parsedUrl.hostname;
+    } catch (error) {
+        return "";
+    }
 }
 }
