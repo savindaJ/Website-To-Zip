@@ -25,7 +25,7 @@ child.stderr.on("data",(response)=>{
 
     if(!website)
     {
-        const resolvingMatch = responseText.match(/Resolving\s+([^\s(]+)/);
+        const resolvingMatch = responseText.match(/Resolving\s+([^\s]+)\s+\(/);
         if (resolvingMatch && resolvingMatch[1]) {
             website = resolvingMatch[1];
         }
