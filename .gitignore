@@ -26,3 +26,7 @@ build/Release
 # Dependency directory
 # https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
 node_modules
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
+config.bat
