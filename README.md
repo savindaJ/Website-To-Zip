@@ -25,7 +25,17 @@ Download the complete source code of any website (including all assets) 🔨.
 - --adjust-extension – Adds suitable extensions to filenames (html or css) depending on their content-type.
 - --page-requisites – Download things like CSS style-sheets and images required to properly display the page offline.
 - --no-parent – When recursing do not ascend to the parent directory. It useful for restricting the download to only a portion of the site
+
 ### Deploy on cloud providers
+
+**Vercel (UI / SSR only):**
+
+This app mirrors sites with **`wget`** in a subprocess, streams progress over **Socket.IO**, and writes zips under `public/sites/`. That requires a **long‑running Node process** and writable disk. **Vercel runs Express as a serverless function** (Socket.IO/WebSockets aren’t hosted there the same way, execution time is limited; `wget` may be unavailable).
+
+Deploy for the **hosted UI** (marketing / previews). Downloads are disabled when `VERCEL=1`. Use **Render, Railway**, or similar for the **full downloader**.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/AhmadIbrahiim/Website-downloader)
+
 [![Run on Replit](https://binbashbanana.github.io/deploy-buttons/buttons/remade/replit.svg)](https://replit.com/github/AhmadIbrahiim/Website-downloader)
 [![Remix on Glitch](https://binbashbanana.github.io/deploy-buttons/buttons/remade/glitch.svg)](https://glitch.com/edit/#!/import/github/AhmadIbrahiim/Website-downloader)
 [![Deploy on Railway](https://binbashbanana.github.io/deploy-buttons/buttons/remade/railway.svg)](https://railway.app/new/template?template=https://github.com/AhmadIbrahiim/Website-downloader)

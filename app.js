@@ -9,6 +9,9 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+// Full mirror + Socket.IO download flow requires a long-running Node process (see README — Vercel).
+app.locals.vercelRestricted = Boolean(process.env.VERCEL);
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');

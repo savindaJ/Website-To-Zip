@@ -2,6 +2,9 @@
   "name": "website-downloader",
   "version": "0.0.1",
   "private": true,
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "start": "node ./bin/www",
     "dev": "export NODE_ENV=Development && npm start"

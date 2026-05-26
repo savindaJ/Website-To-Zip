@@ -6,13 +6,22 @@
 
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
 
+    {{#unless vercelRestricted}}
     <script src="/socket.io/socket.io.js"></script>
+    {{/unless}}
 <!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 
 
   </head>
   <body>
+    {{#if vercelRestricted}}
+    <div class="alert alert-warning" role="alert" style="margin: 12px; max-width: 720px;">
+      <strong>Vercel (serverless).</strong>
+      Mirror downloads here use wget, long jobs, Socket.IO — they need a persistent host (e.g.
+      Render, Railway). Deploy this repo there for full behavior. This UI loads for previews only.
+    </div>
+    {{/if}}
     {{{body}}}
   </body>
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -26,6 +35,7 @@
 </script>
 
 <script>
+{{#unless vercelRestricted}}
   var numberOfFiles = 0;
   const downloadWebsite = document.getElementsByClassName('btn-success')[0];
   // connect to current socket.io server
@@ -71,11 +81,9 @@
         console.log("Now downloading the website ... %s",website)
         socket.emit('request', { token: localStorage['token'] , website});
    }
-
-
-
-
-
+{{else}}
+  document.getElementById('download').disabled = true;
+{{/unless}}
   // Generate token for each user for the first time.
   function generateToken(n) {
     var chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
